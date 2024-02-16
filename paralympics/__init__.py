@@ -3,11 +3,18 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
-
-
+from flask_marshmallow import Marshmallow
+# flask --app flask_app1/app1.py run --debug
+# flask --app paralympics.py run --debug
 # https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/
 class Base(DeclarativeBase):
     pass
+
+# Create a global SQLAlchemy object
+db = SQLAlchemy()
+# Create a global Flask-Marshmallow object
+ma = Marshmallow()
+
 
 
 # First create the db object using the SQLAlchemy constructor.
@@ -18,7 +25,10 @@ db = SQLAlchemy(model_class=Base)
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-
+    # Initialise Flask-SQLAlchemy
+    db.init_app(app)
+    # Initialise Flask-Marshmallow
+    ma.init_app(app)
     app.config.from_mapping(
         # Generate your own SECRET_KEY using python secrets
         SECRET_KEY='l-tirPCf1S44mWAGoWqWlA',
