@@ -1,5 +1,10 @@
 from flask import current_app as app
 
+@app.route('/')
+def hello():
+    return f"Hello!"
+
+
 from paralympics.schemas import RegionSchema
 from paralympics import db
 from paralympics.models import Region
@@ -19,9 +24,3 @@ def get_regions():
     return result
 
 
-# from flask import current_app as app
-
-
-# @app.route('/')
-# def hello():
-#   return f"Hello!"
