@@ -1,20 +1,12 @@
 from flask import current_app as app
 
-
-@app.route('/')
-def hello():
-    return f"Hello!"
-
-from paralympics.schemas import RegionSchema, EventSchema
-
-# Flask-Marshmallow Schemas
-regions_schema = RegionSchema(many=True)
-region_schema = RegionSchema()
-events_schema = EventSchema(many=True)
-event_schema = EventSchema()
-
+from paralympics.schemas import RegionSchema
 from paralympics import db
 from paralympics.models import Region
+# Flask-Marshmallow Schemas
+regions_schema = RegionSchema(many=True)
+
+
 
 @app.get("/regions")
 def get_regions():
@@ -26,3 +18,10 @@ def get_regions():
     # Return the data
     return result
 
+
+# from flask import current_app as app
+
+
+# @app.route('/')
+# def hello():
+#   return f"Hello!"

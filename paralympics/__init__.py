@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from flask_marshmallow import Marshmallow
 # flask --app flask_app1/app1.py run --debug
-# flask --app paralympics.py run --debug
+# flask --app Route.py run --debug
 # https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/
 class Base(DeclarativeBase):
     pass
@@ -14,9 +14,6 @@ class Base(DeclarativeBase):
 db = SQLAlchemy()
 # Create a global Flask-Marshmallow object
 ma = Marshmallow()
-
-
-
 # First create the db object using the SQLAlchemy constructor.
 # Pass a subclass of either DeclarativeBase or DeclarativeBaseNoMeta to the constructor.
 db = SQLAlchemy(model_class=Base)
@@ -25,15 +22,12 @@ db = SQLAlchemy(model_class=Base)
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    # Initialise Flask-SQLAlchemy
-    db.init_app(app)
-    # Initialise Flask-Marshmallow
-    ma.init_app(app)
+    
     app.config.from_mapping(
         # Generate your own SECRET_KEY using python secrets
         SECRET_KEY='l-tirPCf1S44mWAGoWqWlA',
         # configure the SQLite database, relative to the app instance folder
-        SQLALCHEMY_DATABASE_URI="sqlite:///" + os.path.join(app.instance_path, 'paralympics.sqlite'),
+        SQLALCHEMY_DATABASE_URI="sqlite:///" + os.path.join(app.instance_path, 'paralympics.db'),
         SQLALCHEMY_ECHO=True
     )
 
@@ -52,22 +46,25 @@ def create_app(test_config=None):
 
     # Initialise Flask with the SQLAlchemy database extension
     db.init_app(app)
-
+     # Initialise Flask-SQLAlchemy
+    
+    ma.init_app(app)
     # Models are defined in the models module, so you must import them before calling create_all, otherwise SQLAlchemy
     # will not know about them.
-    from paralympics.models import User, Region, Event
     # Create the tables in the database
     # create_all does not update tables if they are already in the database.
+    from paralympics.models import User, Region, Event
     with app.app_context():
+        
         # Create the database and tables if they don't already exist
-        db.create_all()
+       
 
         # Add the data to the database if not already added
         from paralympics.database_utils import add_data
         add_data(db)
-
+        db.create_all()
         # Register the routes with the app in the context
-        from paralympics import paralympics
+        from paralympics import Route
 
     return app
 
