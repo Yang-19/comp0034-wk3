@@ -6,7 +6,7 @@ from sqlalchemy.orm import DeclarativeBase
 from flask_marshmallow import Marshmallow
 
 # flask --app flask_app1/app1.py run --debug
-# flask --app paralympics.py run --debug
+# flask --app paralympics/__init__.py run --debug
 # https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/
 class Base(DeclarativeBase):
     pass
